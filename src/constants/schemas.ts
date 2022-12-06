@@ -1,4 +1,6 @@
 export enum SCHEMAS {
-  AUTH_SCHEMA = 'AuthSchema',
-  PRODUCT_SCHEMA = 'ProductSchema',
+  AUTH_SCHEMA = 'authSchema',
+  PRODUCT_SCHEMA = 'productSchema',
+  REVIEW_SCHEMA = 'reviewSchema',
+  TOP_PAGE_SCHEMA = 'topPageSchema',
 }
