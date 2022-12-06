@@ -6,6 +6,7 @@ import { ReviewController } from './review.controller'
 import { ReviewSchema } from './review.model'
 
 import { SCHEMAS } from '../constants/schemas'
+import { ReviewService } from './review.service';
 
 @Module({
   controllers: [ReviewController],
@@ -17,5 +18,6 @@ import { SCHEMAS } from '../constants/schemas'
       },
     ]),
   ],
+  providers: [ReviewService],
 })
 export class ReviewModule {}
