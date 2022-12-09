@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { Types } from 'mongoose'
+import { SchemaTypes, Types } from 'mongoose'
 
 @Schema({
   timestamps: true,
@@ -26,7 +26,7 @@ export class Review {
   rating: number
 
   @Prop({
-    type: Types.ObjectId,
+    type: SchemaTypes.ObjectId,
   })
   productId: Types.ObjectId
 }

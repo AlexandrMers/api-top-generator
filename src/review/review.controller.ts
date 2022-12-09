@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   HttpException,
   HttpStatus,
   Inject,
@@ -38,6 +39,7 @@ export class ReviewController {
     return doc
   }
 
+  @HttpCode(200)
   @Get('byProduct/:id')
   async getByProduct(@Param('id') id: string) {
     return this.reviewService.findByProductId(id)

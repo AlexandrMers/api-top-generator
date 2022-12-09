@@ -28,7 +28,7 @@ export class ReviewService {
 
   findByProductId(id: string) {
     return this.reviewModel
-      .findById({
+      .find({
         productId: new Types.ObjectId(id),
       })
       .exec()
