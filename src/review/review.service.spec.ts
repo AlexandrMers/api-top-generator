@@ -1,10 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { getModelToken } from '@nestjs/mongoose'
 
+import { Types } from 'mongoose'
+
 import { ReviewService } from './review.service'
 
 import { SCHEMAS } from '../constants/schemas'
-import { Types } from 'mongoose'
 
 describe('ReviewService', () => {
   let service: ReviewService
