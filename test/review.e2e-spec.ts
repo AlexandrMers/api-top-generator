@@ -7,6 +7,12 @@ import { AppModule } from '../src/app.module'
 
 import { CreateReviewDto } from '../src/review/dto/create-review.dto'
 
+// Constants
+import {
+  MAX_VALUE_RATING_ERROR_TEXT,
+  MIN_VALUE_RATING_ERROR_TEXT,
+} from '../src/review/review.constants'
+
 const productId = new Types.ObjectId().toHexString()
 
 const testDto: CreateReviewDto = {
@@ -34,7 +40,7 @@ describe('AppController (e2e)', () => {
     await app.init()
   })
 
-  it('/review/create (POST)', async () => {
+  it('/review/create (POST) - success', async () => {
     return request(app.getHttpServer())
       .post('/review/create')
       .send(testDto)
@@ -42,6 +48,26 @@ describe('AppController (e2e)', () => {
       .then(({ body }: request.Response) => {
         createdId = body._id
         expect(createdId).toBeDefined()
+      })
+  })
+
+  it('/review/create (POST) - fail rating min value', async () => {
+    return request(app.getHttpServer())
+      .post('/review/create')
+      .send({ ...testDto, rating: 0 })
+      .expect(400)
+      .then(({ body }: request.Response) => {
+        expect(body.message[0]).toBe(MIN_VALUE_RATING_ERROR_TEXT)
+      })
+  })
+
+  it('/review/create (POST) - fail rating max value', async () => {
+    return request(app.getHttpServer())
+      .post('/review/create')
+      .send({ ...testDto, rating: 10 })
+      .expect(400)
+      .then(({ body }: request.Response) => {
+        expect(body.message[0]).toBe(MAX_VALUE_RATING_ERROR_TEXT)
       })
   })
 
@@ -72,9 +98,11 @@ describe('AppController (e2e)', () => {
       .expect(200)
   })
 
-  it('/review/:id (DELETE) - failed', async () => {
+  it('/review/:id (DELETE) - failed (Not found 404)', async () => {
+    const anotherCreatedId = new Types.ObjectId().toHexString()
+
     return request(app.getHttpServer())
-      .delete(`/review/${createdId}`)
-      .expect(200)
+      .delete(`/review/${anotherCreatedId}`)
+      .expect(404)
   })
 })
