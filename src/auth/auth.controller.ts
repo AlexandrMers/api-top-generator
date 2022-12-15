@@ -5,9 +5,12 @@ import {
   HttpCode,
   Inject,
   Post,
+  Res,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common'
+
+import { Response } from 'express'
 
 import { AUTH_ALREADY_EXIST_USER_TEXT_ERROR } from './auth.constants'
 
@@ -34,8 +37,12 @@ export class AuthController {
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Post('login')
-  async login(@Body() dto: UserDto) {
-    const user = await this.authService.validateUser(dto.login, dto.password)
-    return this.authService.login(user)
+  async login(@Body() dto: UserDto, @Res() res: Response) {
+    const userData = await this.authService.validateUser(
+      dto.login,
+      dto.password,
+    )
+    const user = await this.authService.login(userData)
+    return res.cookie('token', user.token, { secure: true }).json(user)
   }
 }
