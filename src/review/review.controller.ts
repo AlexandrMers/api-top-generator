@@ -17,7 +17,7 @@ import { ReviewService } from './review.service'
 
 import { CreateReviewDto } from './dto/create-review.dto'
 
-import { REVIEW_NOT_FOUND_TEXT_ERROR } from '../constants/text-errors'
+import { REVIEW_NOT_FOUND_TEXT_ERROR } from './review.constants'
 
 @Controller('review')
 export class ReviewController {

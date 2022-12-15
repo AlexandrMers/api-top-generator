@@ -9,6 +9,8 @@ import {
   ValidationPipe,
 } from '@nestjs/common'
 
+import { AUTH_ALREADY_EXIST_USER_TEXT_ERROR } from './auth.constants'
+
 import { AuthService } from './auth.service'
 
 import { UserDto } from './dto/userDto'
@@ -23,9 +25,7 @@ export class AuthController {
     const existUser = await this.authService.findUserByEmail(dto.login)
 
     if (existUser) {
-      throw new BadRequestException(
-        'Пользователь с таким логином уже существует',
-      )
+      throw new BadRequestException(AUTH_ALREADY_EXIST_USER_TEXT_ERROR)
     }
 
     return this.authService.createUser(dto)
