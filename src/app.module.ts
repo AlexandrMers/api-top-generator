@@ -9,7 +9,7 @@ import { ProductModule } from './product/product.module'
 import { ReviewModule } from './review/review.module'
 
 // configs
-import { getMongoDbUrl, mongodbOptions } from './configs/mongoDbConfig'
+import { getMongoDbUrl, mongodbOptions } from './configs/mongo-db.config'
 
 @Module({
   imports: [
