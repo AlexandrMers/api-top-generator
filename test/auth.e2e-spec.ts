@@ -22,7 +22,7 @@ afterAll(() => {
   disconnect()
 })
 
-describe('AppController (e2e)', () => {
+describe('AuthController (e2e)', () => {
   let app: INestApplication
 
   beforeEach(async () => {
