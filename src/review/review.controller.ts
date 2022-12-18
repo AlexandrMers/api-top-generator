@@ -14,13 +14,15 @@ import {
   ValidationPipe,
 } from '@nestjs/common'
 
-import { ReviewService } from './review.service'
+import { REVIEW_NOT_FOUND_TEXT_ERROR } from './review.constants'
 
+import { UserClientTypeFromAuth } from '../auth/auth.types'
 import { CreateReviewDto } from './dto/create-review.dto'
 
-import { JwtAuthGuard } from '../auth/guards/auth.guard'
+import { ReviewService } from './review.service'
 
-import { REVIEW_NOT_FOUND_TEXT_ERROR } from './review.constants'
+import { JwtAuthGuard } from '../auth/guards/auth.guard'
+import { UserDecorator } from '../decorators/user.decorator'
 
 @Controller('review')
 export class ReviewController {
@@ -50,7 +52,10 @@ export class ReviewController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(200)
   @Get('byProduct/:id')
-  async getByProduct(@Param('id') id: string) {
+  async getByProduct(
+    @Param('id') id: string,
+    @UserDecorator() user: UserClientTypeFromAuth,
+  ) {
     return this.reviewService.findByProductId(id)
   }
 

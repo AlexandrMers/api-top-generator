@@ -42,7 +42,9 @@ export class AuthController {
       dto.login,
       dto.password,
     )
+
     const user = await this.authService.login(userData)
+
     return res.cookie('token', user.token, { secure: true }).json(user)
   }
 }

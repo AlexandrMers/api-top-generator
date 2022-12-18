@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { Request as RequestType } from 'express'
 
-import { UserClientType } from '../auth.types'
+import { UserClientTypeFromAuth } from '../auth.types'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -26,7 +26,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     return null
   }
 
-  validate(user: UserClientType) {
+  validate(user: UserClientTypeFromAuth) {
     return user
   }
 }

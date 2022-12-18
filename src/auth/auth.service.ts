@@ -3,8 +3,10 @@ import { InjectModel } from '@nestjs/mongoose'
 import { JwtService } from '@nestjs/jwt'
 import { compare, genSalt, hash } from 'bcrypt'
 
-import { UserClientType, UserDocument, UserModelType } from './auth.types'
+import { UserClientType, UserModelType } from './auth.types'
 import { UserDto } from './dto/userDto'
+
+import { User } from './user.model'
 
 import {
   NOT_FOUND_USER_TEXT_ERROR,
@@ -12,12 +14,7 @@ import {
 } from './auth.constants'
 import { SCHEMAS } from '../constants/schemas'
 
-import { User } from './user.model'
-
-const mapUserBaseToClient = (user: UserDocument): UserClientType => ({
-  id: user._id,
-  email: user.email,
-})
+import { mapUserBaseToClient } from './mappings/user.mapping'
 
 @Injectable()
 export class AuthService {

@@ -9,3 +9,5 @@ export type UserClientType = {
   id: string
   email: string
 }
+
+export type UserClientTypeFromAuth = UserClientType & { iat: number }
