@@ -4,29 +4,81 @@ import {
   Delete,
   Get,
   HttpCode,
+  Inject,
+  NotFoundException,
   Param,
   Patch,
   Post,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common'
 
-import { ProductModel } from './product.model'
+// Services
+import { ProductService } from './product.service'
+
+// DTO
+import { CreateProductDto } from './dto/create-product.dto'
+
+// Constants
+import { NOT_FOUND_PRODUCT } from './product.constants'
 import { FindProductDto } from './dto/find-product.dto'
+import { JwtAuthGuard } from '../auth/guards/auth.guard'
 
 @Controller('product')
 export class ProductController {
+  constructor(
+    @Inject(ProductService) private readonly productService: ProductService,
+  ) {}
+
+  @UseGuards(JwtAuthGuard)
+  @UsePipes(new ValidationPipe())
   @Post('create')
-  async create(@Body() product: Omit<ProductModel, '_id'>) {}
+  async create(@Body() product: CreateProductDto) {
+    return this.productService.create(product)
+  }
 
   @Get(':id')
-  async get(@Param('id') id: string) {}
+  async get(@Param('id') id: string) {
+    const product = await this.productService.findById(id)
 
-  @Patch(':id')
-  async patch(@Param('id') id: string, @Body() product: ProductModel) {}
+    if (!product) {
+      throw new NotFoundException(NOT_FOUND_PRODUCT)
+    }
 
+    return product
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async delete(@Param('id') id: string) {}
+  async delete(@Param('id') id: string) {
+    const product = await this.productService.deleteById(id)
 
+    if (!product) {
+      throw new NotFoundException(NOT_FOUND_PRODUCT)
+    }
+
+    return product
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @UsePipes(new ValidationPipe())
+  @Patch(':id')
+  async patch(@Param('id') id: string, @Body() product: CreateProductDto) {
+    const updatedProduct = await this.productService.updateById(id, product)
+
+    if (!updatedProduct) {
+      throw new NotFoundException(NOT_FOUND_PRODUCT)
+    }
+
+    return updatedProduct
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Post()
-  async find(@Body() dto: FindProductDto) {}
+  @Post('findWithReviews')
+  async find(@Body() dto: FindProductDto) {
+    return this.productService.findWithReviews(dto)
+  }
 }

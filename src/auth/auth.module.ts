@@ -19,7 +19,11 @@ import { JwtStrategy } from './strategies/jwt.strategy'
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: SCHEMAS.USER_SCHEMA, schema: UserSchema },
+      {
+        name: SCHEMAS.USER_SCHEMA,
+        schema: UserSchema,
+        collection: SCHEMAS.USER_SCHEMA,
+      },
     ]),
     JwtModule.registerAsync({
       imports: [ConfigModule],

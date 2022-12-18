@@ -13,6 +13,7 @@ import { SCHEMAS } from '../constants/schemas'
       {
         name: SCHEMAS.TOP_PAGE_SCHEMA,
         schema: TopPageSchema,
+        collection: SCHEMAS.TOP_PAGE_SCHEMA,
       },
     ]),
   ],

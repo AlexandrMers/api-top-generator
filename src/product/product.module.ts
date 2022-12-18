@@ -6,6 +6,7 @@ import { ProductController } from './product.controller'
 import { ProductSchema } from './product.model'
 
 import { SCHEMAS } from '../constants/schemas'
+import { ProductService } from './product.service'
 
 @Module({
   imports: [
@@ -13,9 +14,11 @@ import { SCHEMAS } from '../constants/schemas'
       {
         name: SCHEMAS.PRODUCT_SCHEMA,
         schema: ProductSchema,
+        collection: SCHEMAS.PRODUCT_SCHEMA,
       },
     ]),
   ],
   controllers: [ProductController],
+  providers: [ProductService],
 })
 export class ProductModule {}

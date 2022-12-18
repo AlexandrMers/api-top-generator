@@ -16,7 +16,7 @@ class ProductCharacteristic {
 @Schema({
   timestamps: true,
 })
-export class ProductModel {
+export class Product {
   @Prop({
     type: String,
   })
@@ -79,4 +79,4 @@ export class ProductModel {
   characteristics: ProductCharacteristic[]
 }
 
-export const ProductSchema = SchemaFactory.createForClass(ProductModel)
+export const ProductSchema = SchemaFactory.createForClass(Product)

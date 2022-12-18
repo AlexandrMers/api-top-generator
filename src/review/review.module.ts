@@ -16,6 +16,7 @@ import { SCHEMAS } from '../constants/schemas'
       {
         name: SCHEMAS.REVIEW_SCHEMA,
         schema: ReviewSchema,
+        collection: SCHEMAS.REVIEW_SCHEMA,
       },
     ]),
   ],
