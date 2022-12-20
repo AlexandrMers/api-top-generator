@@ -8,7 +8,7 @@ export enum TopLevelCategory {
 }
 
 @Schema()
-class Advantages {
+class Advantage {
   @Prop({ type: String })
   title: string
 
@@ -19,7 +19,7 @@ class Advantages {
 @Schema({
   _id: false,
 })
-class HhDataModel {
+class HhData {
   @Prop({ type: Number })
   count: number
 
@@ -36,7 +36,7 @@ class HhDataModel {
 @Schema({
   timestamps: true,
 })
-export class TopPageModel {
+export class TopPage {
   @Prop({
     enum: TopLevelCategory,
   })
@@ -64,14 +64,14 @@ export class TopPageModel {
   category: string
 
   @Prop({
-    type: HhDataModel,
+    type: HhData,
   })
-  hh?: HhDataModel
+  hh?: HhData
 
   @Prop({
-    type: () => [Advantages],
+    type: () => [Advantage],
   })
-  advantages: Advantages[]
+  advantages: Advantage[]
 
   @Prop({
     type: String,
@@ -89,4 +89,4 @@ export class TopPageModel {
   tags: string[]
 }
 
-export const TopPageSchema = SchemaFactory.createForClass(TopPageModel)
+export const TopPageSchema = SchemaFactory.createForClass(TopPage)

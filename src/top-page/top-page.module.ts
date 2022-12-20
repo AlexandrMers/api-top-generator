@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
 
-import { TopPageController } from './top-page.controller'
-
 import { TopPageSchema } from './top-page.model'
 
 import { SCHEMAS } from '../constants/schemas'
+
+import { TopPageController } from './top-page.controller'
+
+import { TopPageService } from './top-page.service'
 
 @Module({
   imports: [
@@ -18,5 +20,6 @@ import { SCHEMAS } from '../constants/schemas'
     ]),
   ],
   controllers: [TopPageController],
+  providers: [TopPageService],
 })
 export class TopPageModule {}
