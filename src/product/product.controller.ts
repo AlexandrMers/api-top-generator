@@ -24,6 +24,7 @@ import { CreateProductDto } from './dto/create-product.dto'
 import { NOT_FOUND_PRODUCT } from './product.constants'
 import { FindProductDto } from './dto/find-product.dto'
 import { JwtAuthGuard } from '../auth/guards/auth.guard'
+import { IdValidationPipe } from '../pipes/id-validation.pipe'
 
 @Controller('product')
 export class ProductController {
@@ -39,7 +40,7 @@ export class ProductController {
   }
 
   @Get(':id')
-  async get(@Param('id') id: string) {
+  async get(@Param('id', IdValidationPipe) id: string) {
     const product = await this.productService.findById(id)
 
     if (!product) {
@@ -51,7 +52,7 @@ export class ProductController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async delete(@Param('id') id: string) {
+  async delete(@Param('id', IdValidationPipe) id: string) {
     const product = await this.productService.deleteById(id)
 
     if (!product) {
@@ -64,7 +65,10 @@ export class ProductController {
   @UseGuards(JwtAuthGuard)
   @UsePipes(new ValidationPipe())
   @Patch(':id')
-  async patch(@Param('id') id: string, @Body() product: CreateProductDto) {
+  async patch(
+    @Param('id', IdValidationPipe) id: string,
+    @Body() product: CreateProductDto,
+  ) {
     const updatedProduct = await this.productService.updateById(id, product)
 
     if (!updatedProduct) {

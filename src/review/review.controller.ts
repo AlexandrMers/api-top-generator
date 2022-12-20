@@ -22,7 +22,10 @@ import { CreateReviewDto } from './dto/create-review.dto'
 import { ReviewService } from './review.service'
 
 import { JwtAuthGuard } from '../auth/guards/auth.guard'
+
 import { UserDecorator } from '../decorators/user.decorator'
+
+import { IdValidationPipe } from '../pipes/id-validation.pipe'
 
 @Controller('review')
 export class ReviewController {
@@ -39,7 +42,7 @@ export class ReviewController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async delete(@Param('id') id: string) {
+  async delete(@Param('id', IdValidationPipe) id: string) {
     const doc = await this.reviewService.delete(id)
 
     if (!doc) {
@@ -53,14 +56,14 @@ export class ReviewController {
   @HttpCode(200)
   @Get('byProduct/:id')
   async getByProduct(
-    @Param('id') id: string,
+    @Param('id', IdValidationPipe) id: string,
     @UserDecorator() user: UserClientTypeFromAuth,
   ) {
     return this.reviewService.findByProductId(id)
   }
 
   @Delete('byProduct/:id')
-  async deleteByProduct(@Param('id') id: string) {
+  async deleteByProduct(@Param('id', IdValidationPipe) id: string) {
     return this.reviewService.deleteByProductId(id)
   }
 }
