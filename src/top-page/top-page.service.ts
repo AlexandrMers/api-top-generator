@@ -1,7 +1,13 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
+
+// Constants
 import { SCHEMAS } from '../constants/schemas'
+
+// Types
 import { TopPageModelType } from './top-page.types'
+
+// DTO
 import { CreateTopPageDto } from './dto/create-top-page.dto'
 import { FindTopPageDto } from './dto/find-top-page.dto'
 
@@ -41,6 +47,7 @@ export class TopPageService {
       .find({
         $text: {
           $search: query,
+          $caseSensitive: false,
         },
       })
       .exec()
