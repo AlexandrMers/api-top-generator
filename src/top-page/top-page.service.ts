@@ -35,4 +35,14 @@ export class TopPageService {
       })
       .exec()
   }
+
+  async search(query: string) {
+    return this.topPageModel
+      .find({
+        $text: {
+          $search: query,
+        },
+      })
+      .exec()
+  }
 }

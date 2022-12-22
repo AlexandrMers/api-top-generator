@@ -9,19 +9,27 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common'
 
+// Constants
 import { NOT_FOUND_PAGE_ERROR } from './top-page.constants'
 
+// DTO
+import { FindTopPageDto } from './dto/find-top-page.dto'
 import { CreateTopPageDto } from './dto/create-top-page.dto'
 
-import { TopPageService } from './top-page.service'
-import { JwtAuthGuard } from '../auth/guards/auth.guard'
+// Pipes
 import { IdValidationPipe } from '../pipes/id-validation.pipe'
-import { FindTopPageDto } from './dto/find-top-page.dto'
+
+// Guards
+import { JwtAuthGuard } from '../auth/guards/auth.guard'
+
+// Services
+import { TopPageService } from './top-page.service'
 
 @Controller('top-page')
 export class TopPageController {
@@ -75,5 +83,11 @@ export class TopPageController {
   @Post('/findByFirstCategory')
   async find(@Body() dto: FindTopPageDto) {
     return this.topPageService.findByCategory(dto)
+  }
+
+  @HttpCode(200)
+  @Post('/search')
+  async search(@Query('query') query: string) {
+    return this.topPageService.search(query)
   }
 }
