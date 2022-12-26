@@ -11,10 +11,10 @@ jobs:
       - uses: actions/checkout@master
       - name: Publish to registry
         uses: elgohr/Publish-Docker-Github-Action@v4
+
         with:
           registry: ghcr.io
           name: ghcr.io/AlexandrMers/api-top-generator/api-top-generator
-          username: "${{ secrets.DOCKER_USERNAME }}"
-          password: "${{ secrets.DOCKER_PASSWORD }}"
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.CR_PAT }}
           tags: "develop"
