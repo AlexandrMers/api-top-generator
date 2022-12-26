@@ -16,5 +16,5 @@ jobs:
           registry: ghcr.io
           name: ghcr.io/AlexandrMers/api-top-generator/api-top-generator
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.CR_PAT }}
+          password: ${{ secrets.GITHUB_TOKEN }}
           tags: "develop"
