@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common'
 
 // modules
 import { MongooseModule } from '@nestjs/mongoose'
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import { AuthModule } from './auth/auth.module'
 import { TopPageModule } from './top-page/top-page.module'
 import { ProductModule } from './product/product.module'
@@ -11,6 +11,7 @@ import { FilesModule } from './files/files.module'
 import { TelegramModule } from './telegram/telegram.module'
 // configs
 import { getMongoDbUrl, mongodbOptions } from './configs/mongo-db.config'
+import { getTgConfig } from './configs/telegram.config'
 
 @Module({
   imports: [
@@ -21,7 +22,11 @@ import { getMongoDbUrl, mongodbOptions } from './configs/mongo-db.config'
     ProductModule,
     ReviewModule,
     FilesModule,
-    TelegramModule,
+    TelegramModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getTgConfig,
+    }),
   ],
   controllers: [],
   providers: [],

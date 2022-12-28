@@ -20,6 +20,7 @@ import { UserClientTypeFromAuth } from '../auth/auth.types'
 import { CreateReviewDto } from './dto/create-review.dto'
 
 import { ReviewService } from './review.service'
+import { TelegramService } from '../telegram/telegram.service'
 
 import { JwtAuthGuard } from '../auth/guards/auth.guard'
 
@@ -27,10 +28,17 @@ import { UserDecorator } from '../decorators/user.decorator'
 
 import { IdValidationPipe } from '../pipes/id-validation.pipe'
 
+const formatMessageForTg = (dto: CreateReviewDto) =>
+  `Заголовок: ${dto.title}\n` +
+  `Описание: ${dto.description}\n` +
+  `Рейтинг: ${dto.rating}\n` +
+  `ID продукта: ${dto.productId}`
+
 @Controller('review')
 export class ReviewController {
   constructor(
     @Inject(ReviewService) private readonly reviewService: ReviewService,
+    @Inject(TelegramService) private readonly telegramService: TelegramService,
   ) {}
 
   @UseGuards(JwtAuthGuard)
@@ -38,6 +46,14 @@ export class ReviewController {
   @Post('create')
   async create(@Body() dto: CreateReviewDto) {
     return this.reviewService.create(dto)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @UsePipes(new ValidationPipe())
+  @Post('notify')
+  async notify(@Body() dto: CreateReviewDto) {
+    const message = formatMessageForTg(dto)
+    return this.telegramService.sendMessage(message)
   }
 
   @UseGuards(JwtAuthGuard)
