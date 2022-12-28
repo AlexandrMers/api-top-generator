@@ -7,10 +7,10 @@ import { AuthModule } from './auth/auth.module'
 import { TopPageModule } from './top-page/top-page.module'
 import { ProductModule } from './product/product.module'
 import { ReviewModule } from './review/review.module'
-
+import { FilesModule } from './files/files.module'
+import { TelegramModule } from './telegram/telegram.module'
 // configs
 import { getMongoDbUrl, mongodbOptions } from './configs/mongo-db.config'
-import { FilesModule } from './files/files.module'
 
 @Module({
   imports: [
@@ -21,6 +21,7 @@ import { FilesModule } from './files/files.module'
     ProductModule,
     ReviewModule,
     FilesModule,
+    TelegramModule,
   ],
   controllers: [],
   providers: [],
