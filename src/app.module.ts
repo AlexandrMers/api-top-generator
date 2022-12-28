@@ -10,6 +10,7 @@ import { ReviewModule } from './review/review.module'
 
 // configs
 import { getMongoDbUrl, mongodbOptions } from './configs/mongo-db.config'
+import { FilesModule } from './files/files.module'
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { getMongoDbUrl, mongodbOptions } from './configs/mongo-db.config'
     TopPageModule,
     ProductModule,
     ReviewModule,
+    FilesModule,
   ],
   controllers: [],
   providers: [],
