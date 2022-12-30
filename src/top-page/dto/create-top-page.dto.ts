@@ -10,7 +10,7 @@ import {
 } from 'class-validator'
 import { Type } from 'class-transformer'
 
-class HhDataDto {
+export class HhDataDto {
   @IsNumber()
   count: number
 
