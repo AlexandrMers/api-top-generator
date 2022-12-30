@@ -31,6 +31,9 @@ class HhData {
 
   @Prop({ type: Number })
   seniorSalary: number
+
+  @Prop({ type: Date })
+  updatedAt: Date
 }
 
 @Schema({

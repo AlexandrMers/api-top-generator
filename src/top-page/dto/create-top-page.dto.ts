@@ -1,6 +1,7 @@
 import { TopLevelCategory } from '../top-page.model'
 import {
   IsArray,
+  IsDate,
   IsEnum,
   IsNumber,
   IsOptional,
@@ -21,6 +22,9 @@ class HhDataDto {
 
   @IsNumber()
   seniorSalary: number
+
+  @IsDate()
+  updatedAt: Date
 }
 
 class AdvantageDto {
