@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   Inject,
+  Logger,
   NotFoundException,
   Param,
   Patch,
@@ -30,11 +31,13 @@ import { JwtAuthGuard } from '../auth/guards/auth.guard'
 
 // Services
 import { TopPageService } from './top-page.service'
+import { HhService } from '../hh/hh.service'
 
 @Controller('top-page')
 export class TopPageController {
   constructor(
     @Inject(TopPageService) private readonly topPageService: TopPageService,
+    @Inject(HhService) private readonly hhService: HhService,
   ) {}
 
   @UsePipes(new ValidationPipe())
@@ -80,14 +83,30 @@ export class TopPageController {
   @UsePipes(new ValidationPipe())
   @UseGuards(JwtAuthGuard)
   @HttpCode(200)
-  @Post('/findByFirstCategory')
+  @Post('findByFirstCategory')
   async find(@Body() dto: FindTopPageDto) {
     return this.topPageService.findByCategory(dto)
   }
 
   @HttpCode(200)
-  @Post('/search')
+  @Post('search')
   async search(@Query('query') query: string) {
     return this.topPageService.search(query)
+  }
+
+  @Post('test')
+  async test() {
+    const pages = await this.topPageService.findForHhUpdate(new Date())
+    Logger.log(pages)
+    for (const page of pages) {
+      const hhData = await this.hhService.get(page.category)
+      Logger.log(hhData)
+      if (hhData) {
+        page.hh = hhData
+        await this.topPageService.updateById(page._id, page)
+      }
+    }
+
+    return 'ok'
   }
 }

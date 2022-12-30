@@ -1,5 +1,5 @@
 export const API_HH_RU_URLS = {
-  VACANCIES: `/vacancies`,
+  VACANCIES: `vacancies`,
 }
 
 export const CLUSTER_SALARY_ID = 'salary'

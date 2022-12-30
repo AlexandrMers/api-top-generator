@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { addDays } from 'date-fns'
 
@@ -7,17 +7,21 @@ import { SCHEMAS } from '../constants/schemas'
 
 // Types
 import { TopPageModelType } from './top-page.types'
+import { TopLevelCategory } from './top-page.model'
+
+// Services
+import { HhService } from '../hh/hh.service'
 
 // DTO
-import { CreateTopPageDto } from './dto/create-top-page.dto'
+import { CreateTopPageDto, HhDataDto } from './dto/create-top-page.dto'
 import { FindTopPageDto } from './dto/find-top-page.dto'
-import { TopLevelCategory } from './top-page.model'
 
 @Injectable()
 export class TopPageService {
   constructor(
     @InjectModel(SCHEMAS.TOP_PAGE_SCHEMA)
     private readonly topPageModel: TopPageModelType,
+    @Inject(HhService) private readonly hhService: HhService,
   ) {}
 
   async create(dto: CreateTopPageDto) {
@@ -74,7 +78,12 @@ export class TopPageService {
     return this.topPageModel
       .find({
         firstCategory: TopLevelCategory.Courses,
-        'hh.updatedAt': { $lt: addDays(date, -1) },
+        $or: [
+          { 'hh.updatedAt': { $lt: addDays(date, -1) } },
+          {
+            'hh.updatedAt': { $exists: false },
+          },
+        ],
       })
       .exec()
   }

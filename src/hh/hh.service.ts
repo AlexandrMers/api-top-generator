@@ -17,7 +17,7 @@ import { HhDataDto } from '../top-page/dto/create-top-page.dto'
 
 @Injectable()
 export class HhService {
-  apiHost: string
+  private apiHost: string
 
   constructor(
     private configService: ConfigService,
@@ -28,8 +28,10 @@ export class HhService {
 
   async get(text: string) {
     try {
+      const url = `${this.apiHost}/${API_HH_RU_URLS.VACANCIES}`
+      Logger.log(url)
       const response = await this.httpService
-        .get<HhResponse>(`${this.apiHost}/${API_HH_RU_URLS.VACANCIES}`, {
+        .get<HhResponse>(url, {
           params: {
             text,
             clusters: true,
@@ -37,16 +39,14 @@ export class HhService {
         })
         .toPromise()
 
-      return this.parseData(response?.data ?? null)
+      return response?.data ? this.parseData(response.data) : null
     } catch (e) {
       Logger.error(e)
     }
   }
 
-  private parseData(data: HhResponse | null): HhDataDto | null {
-    if (!data) return null
-
-    const salaryCluster = data.clusters.find(
+  private parseData(data: HhResponse): HhDataDto {
+    const salaryCluster = data?.clusters.find(
       (cluster) => cluster.id === CLUSTER_SALARY_ID,
     )
 
