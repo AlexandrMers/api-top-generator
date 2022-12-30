@@ -9,6 +9,8 @@ import { ProductModule } from './product/product.module'
 import { ReviewModule } from './review/review.module'
 import { FilesModule } from './files/files.module'
 import { TelegramModule } from './telegram/telegram.module'
+import { HhModule } from './hh/hh.module'
+
 // configs
 import { getMongoDbUrl, mongodbOptions } from './configs/mongo-db.config'
 import { getTgConfig } from './configs/telegram.config'
@@ -27,6 +29,7 @@ import { getTgConfig } from './configs/telegram.config'
       inject: [ConfigService],
       useFactory: getTgConfig,
     }),
+    HhModule,
   ],
   controllers: [],
   providers: [],
