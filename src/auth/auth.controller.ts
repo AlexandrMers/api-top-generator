@@ -3,7 +3,6 @@ import {
   Body,
   Controller,
   HttpCode,
-  Inject,
   Post,
   Res,
   UsePipes,
@@ -20,7 +19,7 @@ import { UserDto } from './dto/userDto'
 
 @Controller('auth')
 export class AuthController {
-  constructor(@Inject(AuthService) private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
   @UsePipes(new ValidationPipe())
   @Post('register')

@@ -4,8 +4,6 @@ import {
   Delete,
   Get,
   HttpCode,
-  Inject,
-  Logger,
   NotFoundException,
   Param,
   Patch,
@@ -15,9 +13,13 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common'
+import { Cron, CronExpression } from '@nestjs/schedule'
 
 // Constants
-import { NOT_FOUND_PAGE_ERROR } from './top-page.constants'
+import {
+  CRON_NAME_OPERATION_FOR_UPDATE_HH_RU_DATA,
+  NOT_FOUND_PAGE_ERROR,
+} from './top-page.constants'
 
 // DTO
 import { FindTopPageDto } from './dto/find-top-page.dto'
@@ -36,8 +38,8 @@ import { HhService } from '../hh/hh.service'
 @Controller('top-page')
 export class TopPageController {
   constructor(
-    @Inject(TopPageService) private readonly topPageService: TopPageService,
-    @Inject(HhService) private readonly hhService: HhService,
+    private readonly topPageService: TopPageService,
+    private readonly hhService: HhService,
   ) {}
 
   @UsePipes(new ValidationPipe())
@@ -94,19 +96,17 @@ export class TopPageController {
     return this.topPageService.search(query)
   }
 
-  @Post('test')
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, {
+    name: CRON_NAME_OPERATION_FOR_UPDATE_HH_RU_DATA,
+  })
   async test() {
     const pages = await this.topPageService.findForHhUpdate(new Date())
-    Logger.log(pages)
     for (const page of pages) {
       const hhData = await this.hhService.get(page.category)
-      Logger.log(hhData)
       if (hhData) {
         page.hh = hhData
         await this.topPageService.updateById(page._id, page)
       }
     }
-
-    return 'ok'
   }
 }

@@ -1,7 +1,6 @@
 import {
   Controller,
   HttpCode,
-  Inject,
   Post,
   UploadedFile,
   UseGuards,
@@ -20,9 +19,7 @@ function getOriginalNameForWebp(file: Express.Multer.File) {
 
 @Controller('files')
 export class FilesController {
-  constructor(
-    @Inject(FilesService) private readonly fileService: FilesService,
-  ) {}
+  constructor(private readonly fileService: FilesService) {}
 
   @Post('upload')
   @HttpCode(200)

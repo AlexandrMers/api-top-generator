@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   HttpCode,
-  Inject,
   NotFoundException,
   Param,
   Patch,
@@ -28,9 +27,7 @@ import { IdValidationPipe } from '../pipes/id-validation.pipe'
 
 @Controller('product')
 export class ProductController {
-  constructor(
-    @Inject(ProductService) private readonly productService: ProductService,
-  ) {}
+  constructor(private readonly productService: ProductService) {}
 
   @UseGuards(JwtAuthGuard)
   @UsePipes(new ValidationPipe())

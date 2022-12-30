@@ -6,7 +6,6 @@ import {
   HttpCode,
   HttpException,
   HttpStatus,
-  Inject,
   Param,
   Post,
   UseGuards,
@@ -37,8 +36,8 @@ const formatMessageForTg = (dto: CreateReviewDto) =>
 @Controller('review')
 export class ReviewController {
   constructor(
-    @Inject(ReviewService) private readonly reviewService: ReviewService,
-    @Inject(TelegramService) private readonly telegramService: TelegramService,
+    private readonly reviewService: ReviewService,
+    private readonly telegramService: TelegramService,
   ) {}
 
   @UseGuards(JwtAuthGuard)
